@@ -150,22 +150,13 @@ function sendPriceAlert($to, $userName, $laptopName, $targetPrice, $currentPrice
     </html>
     ";
     
-    // Email headers
-    $headers = "MIME-Version: 1.0" . "\r\n";
-    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= "From: " . FROM_NAME . " <" . FROM_EMAIL . ">" . "\r\n";
-    
-    // Send email
-    return mail($to, $subject, $message, $headers);
-    
-    // For production, use PHPMailer with SMTP:
-    /*
-    require_once 'PHPMailer/PHPMailer.php';
-    require_once 'PHPMailer/SMTP.php';
-    require_once 'PHPMailer/Exception.php';
-    
+    // Use PHPMailer with SMTP
+    require_once __DIR__ . '/PHPMailer/PHPMailer.php';
+    require_once __DIR__ . '/PHPMailer/SMTP.php';
+    require_once __DIR__ . '/PHPMailer/Exception.php';
+
     $mail = new PHPMailer\PHPMailer\PHPMailer(true);
-    
+
     try {
         $mail->isSMTP();
         $mail->Host = SMTP_HOST;
@@ -174,20 +165,20 @@ function sendPriceAlert($to, $userName, $laptopName, $targetPrice, $currentPrice
         $mail->Password = SMTP_PASS;
         $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = SMTP_PORT;
-        
+
         $mail->setFrom(FROM_EMAIL, FROM_NAME);
         $mail->addAddress($to, $userName);
-        
+
         $mail->isHTML(true);
         $mail->Subject = $subject;
         $mail->Body = $message;
-        
+
         $mail->send();
         return true;
     } catch (Exception $e) {
         error_log("Email error: {$mail->ErrorInfo}");
         return false;
     }
-    */
+    
 }
 ?>

@@ -6,8 +6,8 @@
     --accent-blue: #AAB7B8;
     --accent-gold: #F1C40F;
     --accent-gold-dark: #CDA40D;
-    --soft-ivory: #D5D8DC;
-    --cool-gray: #BFC9CA;
+    --soft-ivory: #06090e;
+    --cool-gray: #071010;
     --card-bg: #2E4053;
     --card-border: rgba(191, 201, 202, 0.18);
     --shadow-primary: 0 20px 45px rgba(46, 64, 83, 0.55);
@@ -451,7 +451,7 @@ body {
 .form-group textarea {
     width: 100%;
     padding: 0.75rem;
-    border: 2px solid rgba(191, 201, 202, 0.25);
+    border: 2px solid rgba(3, 7, 7, 0.25);
     border-radius: 12px;
     font-size: 1rem;
     background: rgba(191, 201, 202, 0.08);
@@ -654,6 +654,31 @@ body {
     text-align: center;
     padding: 2rem 0;
     margin-top: 4rem;
+}
+
+/* Brand Sections */
+.brand-section {
+    margin-bottom: 3rem;
+}
+
+.brand-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--card-border);
+}
+
+.brand-header h2 {
+    color: var(--accent-gold);
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.brand-header .btn-link {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
 }
 
 /* No Results */

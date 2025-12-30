@@ -52,10 +52,10 @@
     th, td {
         padding: 1rem;
         text-align: left;
-        border-bottom: 1px solid #e0e0e0;
+        border-bottom: 1px solidrgb(204, 183, 183);
     }
     th {
-        background: #f8f9fa;
+        background:rgb(140, 145, 149);
         font-weight: 600;
     }
     .laptop-thumb {

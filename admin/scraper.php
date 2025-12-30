@@ -69,7 +69,7 @@ $recentPrices = $conn->query("
 
             <form method="POST">
                 <button type="submit" class="btn btn-primary" onclick="return confirm('This may take a few minutes. Continue?')">
-                    🔄 Run Scraper Now
+                     Run Scraper Now
                 </button>
             </form>
 

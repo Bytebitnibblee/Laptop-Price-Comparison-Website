@@ -12,10 +12,10 @@ define('SITE_NAME', 'Laptop Price Comparison');
 // Email Configuration (Update with your SMTP details)
 define('SMTP_HOST', 'smtp.gmail.com');
 define('SMTP_PORT', 587);
-define('SMTP_USER', 'your-email@gmail.com');
-define('SMTP_PASS', 'your-app-password');
-define('FROM_EMAIL', 'noreply@laptopcompare.com');
-define('FROM_NAME', 'Laptop Compare');
+define('SMTP_USER', 'deep.rawal@deerwalk.edu.np');
+define('SMTP_PASS', 'zzjt ssue cnfq fgjw');
+define('FROM_EMAIL', 'deep.rawal@deerwalk.edu.np');
+define('FROM_NAME', 'Deep Rawal');
 
 // Session Configuration
 ini_set('session.cookie_httponly', 1);
