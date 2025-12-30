@@ -146,6 +146,107 @@ $stats = array_map(function ($value) {
             font-size: 0.75rem;
             font-weight: 600;
         }
+
+        /* Filters section styling for the form at lines 291–359 */
+        .filters {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-primary);
+            border: 1px solid var(--card-border);
+            margin-bottom: 30px;
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1.5fr 1.2fr auto;
+            gap: 16px;
+            align-items: end;
+        }
+
+        /* Labels */
+        .filters label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--soft-ivory);
+            margin-bottom: 6px;
+        }
+
+        /* Search box */
+        .filters .search-box input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--soft-ivory);
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        }
+
+        .filters .search-box input::placeholder {
+            color: var(--cool-gray);
+        }
+
+        .filters .search-box input:focus {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 3px rgba(241, 196, 15, 0.2);
+            outline: none;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Select & input fields */
+        .filter-group select,
+        .filter-group input[type="number"] {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--soft-ivory);
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            border-color: var(--accent-gold);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(241, 196, 15, 0.2);
+        }
+
+        /* Price range */
+        .price-range {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .price-range span {
+            color: var(--cool-gray);
+            font-weight: 500;
+        }
+
+        /* Buttons container (buttons themselves use global .btn styles) */
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .filter-row {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .filter-actions .btn {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -179,6 +280,63 @@ $stats = array_map(function ($value) {
             <div class="alert alert-error"><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></div>
         <?php endif; ?>
 
+        <!-- Search & Filters -->
+        <section class="filters">
+            <form method="get">
+                <div class="filter-row">
+
+                    <div class="filter-group">
+                        <label for="brand">Brand</label>
+                        <select name="brand" id="brand">
+                            <option value="">All brands</option>
+                            <?php foreach ($brands as $brand): ?>
+                                <option value="<?php echo htmlspecialchars($brand); ?>" <?php echo $brand === $brandFilter ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($brand); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>Price range (₹)</label>
+                        <div class="price-range">
+                            <input
+                                type="number"
+                                name="min_price"
+                                placeholder="Min"
+                                min="0"
+                                step="1000"
+                                value="<?php echo $minPrice !== null ? htmlspecialchars($minPrice) : ''; ?>"
+                            >
+                            <span>–</span>
+                            <input
+                                type="number"
+                                name="max_price"
+                                placeholder="Max"
+                                min="0"
+                                step="1000"
+                                value="<?php echo $maxPrice !== null ? htmlspecialchars($maxPrice) : ''; ?>"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="sort">Sort by</label>
+                        <select name="sort" id="sort">
+                            <option value="price_asc"  <?php echo $sort === 'price_asc'  ? 'selected' : ''; ?>>Price: Low to High</option>
+                            <option value="price_desc" <?php echo $sort === 'price_desc' ? 'selected' : ''; ?>>Price: High to Low</option>
+                            <option value="name_asc"   <?php echo $sort === 'name_asc'   ? 'selected' : ''; ?>>Name: A to Z</option>
+                            <option value="name_desc"  <?php echo $sort === 'name_desc'  ? 'selected' : ''; ?>>Name: Z to A</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                        <a href="index.php" class="btn btn-secondary btn-ghost">Reset</a>
+                    </div>
+                </div>
+            </form>
+        </section>
 
         <?php
         // Get popular brands and their laptop groups for brand sections
