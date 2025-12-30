@@ -1,5 +1,5 @@
 <?php
-// email_helper.php - Add this new file for email functions
+// email_helper.php - Email functions (using PHPMailer + SMTP)
 
 function sendPriceAlertEmail($userEmail, $userName, $laptopName, $targetPrice, $currentPrice, $laptopId) {
     $subject = "Price Alert: {$laptopName} is now within your target price!";
@@ -45,12 +45,36 @@ function sendPriceAlertEmail($userEmail, $userName, $laptopName, $targetPrice, $
     </body>
     </html>
     ";
-    
-    $headers = "MIME-Version: 1.0" . "\r\n";
-    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= "From: Laptop Price Tracker <noreply@laptoppricetracker.com>" . "\r\n";
-    
-    return mail($userEmail, $subject, $message, $headers);
+
+    // Use PHPMailer with the same SMTP config as in check-alert.php
+    require_once __DIR__ . '/PHPMailer/src/PHPMailer.php';
+    require_once __DIR__ . '/PHPMailer/src/SMTP.php';
+    require_once __DIR__ . '/PHPMailer/src/Exception.php';
+
+    $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+
+    try {
+        $mail->isSMTP();
+        $mail->Host = SMTP_HOST;
+        $mail->SMTPAuth = true;
+        $mail->Username = SMTP_USER;
+        $mail->Password = SMTP_PASS;
+        $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = SMTP_PORT;
+
+        $mail->setFrom(FROM_EMAIL, FROM_NAME);
+        $mail->addAddress($userEmail, $userName);
+
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body = $message;
+
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        error_log("Email error (sendPriceAlertEmail): {$mail->ErrorInfo}");
+        return false;
+    }
 }
 
 function getBaseUrl() {
