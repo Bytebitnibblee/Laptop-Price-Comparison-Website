@@ -9,3 +9,14 @@ ALTER TABLE prices ADD COLUMN scraped_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP AFT
 -- Optional: Update existing records to have a scraped_at value (use current timestamp)
 -- Uncomment the line below if you want to set scraped_at for existing records
 -- UPDATE prices SET scraped_at = last_updated WHERE scraped_at IS NULL;
+
+
+
+
+
+
+
+
+
+
+

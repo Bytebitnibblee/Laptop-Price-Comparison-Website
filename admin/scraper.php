@@ -64,8 +64,8 @@ $recentPrices = $conn->query("
         <?php endif; ?>
 
         <div class="scraper-panel">
-            <h2>Manual Scraper Execution</h2>
-            <p>Run the scraper to fetch latest laptop prices from integrated retailers.</p>
+          
+            <p>Scrape prices from retuilers.</p>
 
             <form method="POST">
                 <button type="submit" class="btn btn-primary" onclick="return confirm('This may take a few minutes. Continue?')">

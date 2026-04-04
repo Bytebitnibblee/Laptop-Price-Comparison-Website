@@ -1,6 +1,7 @@
 <?php
 require_once 'config.php';
 
+
 $search = isset($_GET['search']) ? sanitize($_GET['search']) : '';
 $brandFilter = isset($_GET['brand']) ? sanitize($_GET['brand']) : '';
 $minPrice = isset($_GET['min_price']) ? (float)$_GET['min_price'] : null;
@@ -10,6 +11,8 @@ $allowedSorts = ['price_asc','price_desc','name_asc','name_desc'];
 if (!in_array($sort, $allowedSorts, true)) {
     $sort = 'price_asc';
 }
+
+
 
 $filters = [];
 $params = [];
@@ -120,7 +123,7 @@ $stats = array_map(function ($value) {
         .autocomplete-suggestion {
             padding: 0.75rem 1rem;
             cursor: pointer;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid var(--card-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -129,18 +132,18 @@ $stats = array_map(function ($value) {
             border-bottom: none;
         }
         .autocomplete-suggestion:hover {
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--surface-muted);
         }
         .suggestion-text {
             font-weight: 500;
         }
         .suggestion-brand {
-            color: var(--accent-gold);
+            color: var(--navy-mid);
             font-size: 0.85rem;
         }
         .suggestion-type {
-            background: var(--accent-gold);
-            color: #1b1405;
+            background: var(--navy);
+            color: #f8fafc;
             padding: 0.2rem 0.5rem;
             border-radius: 10px;
             font-size: 0.75rem;
@@ -169,7 +172,7 @@ $stats = array_map(function ($value) {
             display: block;
             font-size: 13px;
             font-weight: 600;
-            color: var(--soft-ivory);
+            color: var(--text-primary);
             margin-bottom: 6px;
         }
 
@@ -180,8 +183,8 @@ $stats = array_map(function ($value) {
             border-radius: 8px;
             border: 1px solid var(--card-border);
             font-size: 14px;
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--soft-ivory);
+            background: var(--surface);
+            color: var(--text-primary);
             transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
         }
 
@@ -190,10 +193,10 @@ $stats = array_map(function ($value) {
         }
 
         .filters .search-box input:focus {
-            border-color: var(--accent-gold);
-            box-shadow: 0 0 0 3px rgba(241, 196, 15, 0.2);
+            border-color: var(--navy-mid);
+            box-shadow: 0 0 0 3px rgba(12, 35, 64, 0.15);
             outline: none;
-            background: rgba(255, 255, 255, 0.08);
+            background: var(--surface);
         }
 
         /* Select & input fields */
@@ -204,15 +207,15 @@ $stats = array_map(function ($value) {
             border-radius: 8px;
             border: 1px solid var(--card-border);
             font-size: 14px;
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--soft-ivory);
+            background: var(--surface);
+            color: var(--text-primary);
         }
 
         .filter-group select:focus,
         .filter-group input:focus {
-            border-color: var(--accent-gold);
+            border-color: var(--navy-mid);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(241, 196, 15, 0.2);
+            box-shadow: 0 0 0 3px rgba(12, 35, 64, 0.15);
         }
 
         /* Price range */

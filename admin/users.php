@@ -80,7 +80,7 @@ $users = $conn->query("
                                     Delete
                                 </a>
                             <?php else: ?>
-                                <span style="color: #999;">Current User</span>
+                                <span style="color: #5c6b80;">Current User</span>
                             <?php endif; ?>
                         </td>
                     </tr>

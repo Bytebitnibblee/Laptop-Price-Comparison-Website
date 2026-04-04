@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($stmt->execute([$name, $brand, $processor, $ram, $storage, $screen_size, $image_url, $specs])) {
             $laptop_id = $conn->lastInsertId();
-            $retailers = ['Amazon', 'Flipkart', 'Daraz'];
+            $retailers = ['Nagmani', 'Yantra Nepal', 'Daraz'];
 
             foreach ($retailers as $retailer) {
                 $price_key = strtolower($retailer) . '_price';
@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="alert alert-success"><?php echo $success; ?></div>
         <?php endif; ?>
 
-        <div style="background: white; padding: 2rem; border-radius: 10px; max-width: 800px;">
+        <div class="admin-panel">
             <form method="POST">
                 <h3>Basic Information</h3>
 
@@ -136,27 +136,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h3 style="margin-top: 2rem;">Prices (Optional)</h3>
 
                 <div class="form-group">
-                    <label>Amazon Price (₹)</label>
-                    <input type="number" name="amazon_price" step="0.01">
+                    <label>Nagmani Price </label>
+                        <input type="number" name="nagmani_price" step="0.01">
                 </div>
 
                 <div class="form-group">
-                    <label>Amazon URL</label>
-                    <input type="url" name="amazon_url">
+                    <label>Nagmani URL</label>
+                    <input type="url" name="nagmani_url">
                 </div>
 
                 <div class="form-group">
-                    <label>Flipkart Price (₹)</label>
-                    <input type="number" name="flipkart_price" step="0.01">
+                    <label>Yantra Nepal Price </label>
+                    <input type="number" name="yantra_nepal_price" step="0.01">
                 </div>
 
                 <div class="form-group">
-                    <label>Flipkart URL</label>
-                    <input type="url" name="flipkart_url">
+                    <label>Yantra Nepal URL</label>
+                    <input type="url" name="yantra_nepal_url">
                 </div>
 
                 <div class="form-group">
-                    <label>Daraz Price (₹)</label>
+                    <label>Daraz Price </label>
                     <input type="number" name="daraz_price" step="0.01">
                 </div>
 
@@ -164,6 +164,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label>Daraz URL</label>
                     <input type="url" name="daraz_url">
                 </div>
+
+                <div class="form-group">
+                    <label> Onin  </label>
+                    <input type="number" name="onin_price" step="0.01">
+                </div>
+
+                <div class="form-group">
+                    <label> Onin  URL</label>
+                        <input type="url" name="onin_url">
+                </div>
+
 
                 <div style="display: flex; gap: 1rem; margin-top: 2rem;">
                     <button type="submit" class="btn btn-primary">Add Laptop</button>

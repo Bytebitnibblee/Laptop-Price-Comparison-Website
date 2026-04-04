@@ -33,7 +33,7 @@ MUDITA_START_PAGE = 2
 
 def create_driver():
     chrome_options = Options()
-    #
+    # Remove headless for debugging - you'll see the browser
     # chrome_options.add_argument("--headless=new")
     chrome_options.add_argument("--disable-blink-features=AutomationControlled")
     chrome_options.add_argument("--start-maximized")
@@ -249,6 +249,129 @@ class BaseScraper:
 
         print(f"\n Successfully saved {saved} price entries from {self.retailer} ({len(grouped_products)} model groups)")
 
+    def update_existing_products(self, scraped_urls):
+        """
+        After the main scrape, find any products from this retailer
+        already in the DB whose URL was NOT seen in this run.
+        Visit each stored URL directly and update the price.
+
+        scraped_urls: set of product URLs collected during the main scrape
+        """
+        if not self.conn or not self.driver:
+            return
+
+        print(f"\n{'='*60}")
+        print(f" Checking for existing {self.retailer} products not in top {PER_SITE_MAX_RESULTS}...")
+        print(f"{'='*60}\n")
+
+        # Get all distinct URLs for this retailer saved in the DB
+        self.cursor.execute(
+            """SELECT DISTINCT product_url, laptop_id
+               FROM prices
+               WHERE retailer = %s
+                 AND product_url IS NOT NULL""",
+            (self.retailer,)
+        )
+        all_db_urls = self.cursor.fetchall()
+
+        # Filter out ones we already updated in this run
+        missed = [row for row in all_db_urls if row["product_url"] not in scraped_urls]
+
+        if not missed:
+            print(f"  All existing products were covered in the main scrape. Nothing to update.")
+            return
+
+        print(f"  Found {len(missed)} existing product(s) not seen in this run — updating now...\n")
+
+        updated = 0
+        for row in missed:
+            url = row["product_url"]
+            laptop_id = row["laptop_id"]
+
+            try:
+                print(f"  Visiting: {url[:80]}...")
+                self.driver.get(url)
+                time.sleep(3)
+
+                soup = BeautifulSoup(self.driver.page_source, 'html.parser')
+
+                # Generic price extraction — tries patterns used across all 5 sites
+                price = None
+
+                # Pattern 1: span.price  (Mudita / Nagmani — Magento)
+                price_elem = soup.find("span", class_="price")
+                if price_elem:
+                    price = self.clean_price(price_elem.get_text(strip=True))
+
+                # Pattern 2: span fs-4 fw-bold  (Onin)
+                if not price:
+                    price_elem = soup.find("span", class_=lambda x: x and "fs-4" in x and "fw-bold" in x)
+                    if price_elem:
+                        price = self.clean_price(price_elem.get_text(strip=True))
+
+                # Pattern 3: woocommerce-Price-amount  (Yantra Nepal)
+                if not price:
+                    price_elem = soup.find("span", class_="woocommerce-Price-amount")
+                    if price_elem:
+                        bdi = price_elem.find("bdi")
+                        price = self.clean_price((bdi or price_elem).get_text(strip=True))
+
+                # Pattern 4: Daraz ooOxS span
+                if not price:
+                    price_elem = soup.find("span", class_="ooOxS")
+                    if price_elem:
+                        price = self.clean_price(price_elem.get_text(strip=True))
+
+                # Pattern 5: fallback — any Rs / रू anywhere on page
+                if not price:
+                    text = soup.get_text()
+                    m = re.search(r'(?:Rs\.?\s*|रू\.?)\s*([\d,]+)', text)
+                    if m:
+                        price = self.clean_price(m.group(0))
+
+                if not price or price == 0:
+                    print(f"    Could not extract price — skipping\n")
+                    continue
+
+                print(f"    Price found: Rs.{price:,.0f}")
+
+                # Check if already updated today for this exact URL
+                self.cursor.execute(
+                    """SELECT id FROM prices
+                       WHERE laptop_id = %s
+                         AND retailer = %s
+                         AND product_url = %s
+                         AND DATE(scraped_at) = CURDATE()""",
+                    (laptop_id, self.retailer, url)
+                )
+                existing_today = self.cursor.fetchone()
+
+                if existing_today:
+                    self.cursor.execute(
+                        """UPDATE prices SET price = %s, scraped_at = %s
+                           WHERE id = %s""",
+                        (price, datetime.now(), existing_today["id"])
+                    )
+                    print(f"    Updated today's record.\n")
+                else:
+                    self.cursor.execute(
+                        """INSERT INTO prices (laptop_id, retailer, price, product_url, scraped_at)
+                           VALUES (%s, %s, %s, %s, %s)""",
+                        (laptop_id, self.retailer, price, url, datetime.now())
+                    )
+                    print(f"    Inserted new price record.\n")
+
+                self.conn.commit()
+                updated += 1
+
+            except Exception as e:
+                print(f"    Error updating {url}: {e}\n")
+                if self.conn:
+                    self.conn.rollback()
+                continue
+
+        print(f"  Done — updated {updated} existing product(s) for {self.retailer}\n")
+
     def close(self):
         print(f"\n Cleaning up {self.retailer} scraper...")
         if self.driver:
@@ -426,8 +549,10 @@ class MuditaScraper(BaseScraper):
                     print(f"   Price: Rs.{p['price']:,.2f}")
 
                 super().save_to_db(products)
+                super().update_existing_products({p["url"] for p in products})
             else:
                 print("\n  No products were scraped successfully")
+                super().update_existing_products(set())
 
         except Exception as e:
             print(f"\n Fatal error: {e}")
@@ -612,8 +737,10 @@ class DarazScraper(BaseScraper):
                     print(f"   Price: Rs.{p['price']:,.2f}")
 
                 super().save_to_db(products)
+                super().update_existing_products({p["url"] for p in products})
             else:
                 print("\n  No products were scraped successfully")
+                super().update_existing_products(set())
 
         except Exception as e:
             print(f"\n Fatal error: {e}")
@@ -779,8 +906,10 @@ class NagmaniScraper(BaseScraper):
                     print(f"   Price: Rs.{p['price']:,.2f}")
 
                 super().save_to_db(products)
+                super().update_existing_products({p["url"] for p in products})
             else:
                 print("\n  No products were scraped successfully")
+                super().update_existing_products(set())
 
         except Exception as e:
             print(f"\n Fatal error: {e}")
@@ -965,8 +1094,10 @@ class YantraNepalScraper(BaseScraper):
                     print(f"   Price: Rs.{p['price']:,.2f}")
 
                 super().save_to_db(products)
+                super().update_existing_products({p["url"] for p in products})
             else:
                 print("\n  No products were scraped successfully")
+                super().update_existing_products(set())
 
         except Exception as e:
             print(f"\n Fatal error: {e}")
@@ -1112,8 +1243,10 @@ class OninScraper(BaseScraper):
                     print(f"   Price: Rs.{p['price']:,.2f}")
 
                 super().save_to_db(products)
+                super().update_existing_products({p["url"] for p in products})
             else:
                 print("\n  No products were scraped successfully")
+                super().update_existing_products(set())
 
         except Exception as e:
             print(f"\n Fatal error: {e}")
@@ -1158,4 +1291,3 @@ if __name__ == "__main__":
     print("ALL SCRAPERS COMPLETED")
     print("="*80)
     print("\nActive retailers: 5 (Mudita, Daraz, Nagmani, Yantra Nepal, Onin)")
-    

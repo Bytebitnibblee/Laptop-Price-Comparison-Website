@@ -106,8 +106,8 @@ $pageTitle = count($laptops) > 1 ? $group_key : $laptop['name'];
             margin: 0 0 1rem 0;
         }
         .best-price-banner {
-            background: linear-gradient(135deg, rgba(245, 197, 24, 0.1), rgba(245, 197, 24, 0.05));
-            border: 1px solid var(--accent-gold);
+            background: linear-gradient(135deg, rgba(12, 35, 64, 0.08), rgba(12, 35, 64, 0.03));
+            border: 1px solid rgba(12, 35, 64, 0.2);
             border-radius: 12px;
             padding: 1rem 1.5rem;
             display: flex;
@@ -122,7 +122,7 @@ $pageTitle = count($laptops) > 1 ? $group_key : $laptop['name'];
         .best-price-banner .price {
             font-size: 1.8rem;
             font-weight: 700;
-            color: var(--accent-gold);
+            color: var(--navy);
         }
         .best-price-banner .retailer {
             color: var(--text-secondary);
@@ -212,8 +212,8 @@ $pageTitle = count($laptops) > 1 ? $group_key : $laptop['name'];
             align-items: center;
         }
         .price-row.best-price {
-            border-color: var(--accent-gold);
-            background: linear-gradient(135deg, rgba(245, 197, 24, 0.05), rgba(245, 197, 24, 0.02));
+            border-color: var(--navy-mid);
+            background: linear-gradient(135deg, rgba(12, 35, 64, 0.06), rgba(12, 35, 64, 0.02));
         }
         .model-name {
             font-weight: 500;
@@ -227,7 +227,7 @@ $pageTitle = count($laptops) > 1 ? $group_key : $laptop['name'];
         .price-info .price {
             font-size: 1.25rem;
             font-weight: 700;
-            color: var(--accent-gold);
+            color: var(--navy);
         }
         .stock {
             font-size: 0.85rem;
@@ -412,12 +412,12 @@ $pageTitle = count($laptops) > 1 ? $group_key : $laptop['name'];
                                         <div class="model-name">
                                             <?php echo htmlspecialchars($price['laptop_name']); ?>
                                             <?php if ($index === 0 && count($retailerPrices) > 1): ?>
-                                                <span class="badge" style="background: var(--accent-gold); color: #1b1405; padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.75rem; margin-left: 0.5rem;">
+                                                <span class="badge" style="background: var(--navy); color: #f8fafc; padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.75rem; margin-left: 0.5rem;">
                                                     Best at <?php echo htmlspecialchars($retailer); ?>
                                                 </span>
                                             <?php endif; ?>
                                             <?php if ($price['price'] == $bestPrice && $price['retailer'] == $bestRetailer): ?>
-                                                <span class="badge" style="background: var(--accent-gold); color: #1b1405; padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.75rem; margin-left: 0.5rem;">
+                                                <span class="badge" style="background: var(--navy); color: #f8fafc; padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.75rem; margin-left: 0.5rem;">
                                                     🏆 Best Overall
                                                 </span>
                                             <?php endif; ?>

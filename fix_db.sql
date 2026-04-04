@@ -1,11 +1,10 @@
--- Fix the missing group_key column in laptops table
--- Run this in phpMyAdmin or MySQL command line
+
 
 -- 1. Add the group_key column
 ALTER TABLE laptops ADD COLUMN group_key VARCHAR(100) NOT NULL AFTER brand;
 
 -- 2. Populate group_key for existing laptops based on their names
--- This uses the same logic as the Python scraper
+
 UPDATE laptops SET group_key = CASE
     -- Extract brand and series pattern
     WHEN name LIKE 'ASUS VivoBook%' THEN 'ASUS VivoBook'
@@ -31,7 +30,7 @@ UPDATE laptops SET group_key = CASE
     WHEN name LIKE 'Acer Swift%' THEN 'Acer Swift'
     WHEN name LIKE 'Apple MacBook Air%' THEN 'Apple MacBook Air'
     WHEN name LIKE 'Apple MacBook Pro%' THEN 'Apple MacBook Pro'
-    -- Generic fallback: take brand + first word after brand
+    --  take brand + first word after brand
     ELSE CONCAT(
         brand, ' ',
         SUBSTRING_INDEX(

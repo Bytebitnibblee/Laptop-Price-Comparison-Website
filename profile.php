@@ -108,8 +108,8 @@ $stats['active_alerts'] = $stats['active_alerts'] ?? 0;
             <div class="alert alert-success"><?php echo $success; ?></div>
         <?php endif; ?>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
-            <div style="background: white; padding: 2rem; border-radius: 10px;">
+        <div class="profile-grid">
+            <div class="profile-card">
                 <h2>Profile Information</h2>
                 <form method="POST" style="margin-top: 1.5rem;">
                     <div class="form-group">
@@ -126,7 +126,7 @@ $stats['active_alerts'] = $stats['active_alerts'] ?? 0;
                 </form>
             </div>
 
-            <div style="background: white; padding: 2rem; border-radius: 10px;">
+            <div class="profile-card">
                 <h2>Change Password</h2>
                 <form method="POST" style="margin-top: 1.5rem;">
                     <div class="form-group">
@@ -149,26 +149,26 @@ $stats['active_alerts'] = $stats['active_alerts'] ?? 0;
             </div>
         </div>
 
-        <div style="background: white; padding: 2rem; border-radius: 10px; margin-top: 2rem;">
+        <div class="profile-stats-block">
             <h2>Account Statistics</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
-                <div style="text-align: center; padding: 1.5rem; background: #f8f9fa; border-radius: 8px;">
-                    <div style="font-size: 2.2rem; font-weight: bold; color: #667eea;"><?php echo $stats['total_alerts']; ?></div>
-                    <div style="color: #666; margin-top: 0.5rem;">Total Alerts</div>
+            <div class="stat-grid">
+                <div class="stat-tile">
+                    <div class="stat-value"><?php echo $stats['total_alerts']; ?></div>
+                    <div class="stat-label">Total Alerts</div>
                 </div>
 
-                <div style="text-align: center; padding: 1.5rem; background: #f8f9fa; border-radius: 8px;">
-                    <div style="font-size: 2.2rem; font-weight: bold; color: #28a745;"><?php echo $stats['active_alerts']; ?></div>
-                    <div style="color: #666; margin-top: 0.5rem;">Active Alerts</div>
+                <div class="stat-tile">
+                    <div class="stat-value stat-value--accent"><?php echo $stats['active_alerts']; ?></div>
+                    <div class="stat-label">Active Alerts</div>
                 </div>
 
-                <div style="text-align: center; padding: 1.5rem; background: #f8f9fa; border-radius: 8px;">
-                    <div style="font-size: 1.2rem; font-weight: bold; color: #667eea;"><?php echo date('M d, Y', strtotime($user['created_at'])); ?></div>
-                    <div style="color: #666; margin-top: 0.5rem;">Member Since</div>
+                <div class="stat-tile">
+                    <div class="stat-value" style="font-size: 1.2rem;"><?php echo date('M d, Y', strtotime($user['created_at'])); ?></div>
+                    <div class="stat-label">Member Since</div>
                 </div>
             </div>
 
-            <div style="margin-top: 2rem; text-align: center;">
+            <div class="profile-actions">
                 <a href="my-alerts.php" class="btn btn-primary">Manage My Alerts</a>
                 <a href="index.php" class="btn btn-secondary">Browse Laptops</a>
             </div>

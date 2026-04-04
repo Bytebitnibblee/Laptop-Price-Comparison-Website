@@ -70,29 +70,30 @@ $alerts = $conn->query("
     <?php include 'partials/nav-styles.php'; ?>
     <style>
         .btn-email {
-            background-color: #28a745;
-            color: white;
-            padding: 5px 10px;
+            background-color: #0c2340;
+            color: #f8fafc;
+            padding: 6px 12px;
             border: none;
-            border-radius: 3px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 12px;
+            font-weight: 600;
             margin-right: 5px;
         }
         .btn-email:hover {
-            background-color: #218838;
+            background-color: #153a5c;
         }
         .btn-email:disabled {
-            background-color: #6c757d;
+            background-color: #64748b;
             cursor: not-allowed;
         }
         .price-met {
-            color: #28a745;
+            color: #15803d;
             font-weight: bold;
         }
         .last-notified {
             font-size: 11px;
-            color: #666;
+            color: #5c6b80;
             font-style: italic;
         }
         .alert-error {
@@ -148,7 +149,7 @@ $alerts = $conn->query("
                         <tr>
                             <td>
                                 <?php echo htmlspecialchars($alert['user_name']); ?><br>
-                                <small style="color: #666;"><?php echo htmlspecialchars($alert['email']); ?></small>
+                                <small style="color: #5c6b80;"><?php echo htmlspecialchars($alert['email']); ?></small>
                             </td>
                             <td><?php echo htmlspecialchars($alert['laptop_name']); ?></td>
                             <td><?php echo formatPrice($alert['target_price']); ?></td>

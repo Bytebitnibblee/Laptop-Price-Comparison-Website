@@ -33,7 +33,7 @@ $laptops = $conn->query("
     <?php include 'partials/admin-nav.php'; ?>
 
     <main class="container">
-        <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <div class="admin-toolbar">
             <h1>Manage Laptops</h1>
             <a href="add-laptop.php" class="btn btn-primary">Add New Laptop</a>
         </div>
