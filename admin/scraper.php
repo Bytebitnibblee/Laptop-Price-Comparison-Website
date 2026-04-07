@@ -42,6 +42,7 @@ $recentPrices = $conn->query("
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php include '../includes/theme-head.php'; ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Run Scraper - Admin</title>

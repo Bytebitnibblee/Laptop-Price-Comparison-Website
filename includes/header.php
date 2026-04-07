@@ -9,7 +9,12 @@ $baseUrl = '/' . ($relativeRoot ? $relativeRoot . '/' : '');
         <div class="logo">
             <a href="<?php echo $baseUrl; ?>index.php"><?php echo SITE_NAME; ?></a>
         </div>
-        <nav class="nav">
+        <div class="header-actions">
+            <div class="theme-segment" role="group" aria-label="Color theme">
+                <button type="button" class="theme-btn" data-theme-choice="light" aria-pressed="true">Light</button>
+                <button type="button" class="theme-btn" data-theme-choice="dark" aria-pressed="false">Dark</button>
+            </div>
+            <nav class="nav">
             <ul>
                 <li><a href="<?php echo $baseUrl; ?>index.php">Home</a></li>
                 <?php if (isLoggedIn()): ?>
@@ -24,7 +29,8 @@ $baseUrl = '/' . ($relativeRoot ? $relativeRoot . '/' : '');
                     <li><a href="<?php echo $baseUrl; ?>signup.php">Sign Up</a></li>
                 <?php endif; ?>
             </ul>
-        </nav>
+            </nav>
+        </div>
     </div>
 </header>
 

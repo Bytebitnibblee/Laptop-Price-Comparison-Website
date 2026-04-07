@@ -85,6 +85,7 @@ $pageTitle = count($laptops) > 1 ? $group_key : $laptop['name'];
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php include 'includes/theme-head.php'; ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($pageTitle); ?> - Price Comparison - <?php echo SITE_NAME; ?></title>
@@ -412,12 +413,12 @@ $pageTitle = count($laptops) > 1 ? $group_key : $laptop['name'];
                                         <div class="model-name">
                                             <?php echo htmlspecialchars($price['laptop_name']); ?>
                                             <?php if ($index === 0 && count($retailerPrices) > 1): ?>
-                                                <span class="badge" style="background: var(--navy); color: #f8fafc; padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.75rem; margin-left: 0.5rem;">
+                                                <span class="badge badge--inline">
                                                     Best at <?php echo htmlspecialchars($retailer); ?>
                                                 </span>
                                             <?php endif; ?>
                                             <?php if ($price['price'] == $bestPrice && $price['retailer'] == $bestRetailer): ?>
-                                                <span class="badge" style="background: var(--navy); color: #f8fafc; padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.75rem; margin-left: 0.5rem;">
+                                                <span class="badge badge--inline">
                                                     🏆 Best Overall
                                                 </span>
                                             <?php endif; ?>

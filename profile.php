@@ -86,6 +86,7 @@ $stats['active_alerts'] = $stats['active_alerts'] ?? 0;
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php include 'includes/theme-head.php'; ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile - <?php echo SITE_NAME; ?></title>
